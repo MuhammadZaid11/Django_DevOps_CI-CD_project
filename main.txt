@@ -1,0 +1,2 @@
+domain_name = zaid-devops.duckdns.org
+Ip = 98.95.158.120

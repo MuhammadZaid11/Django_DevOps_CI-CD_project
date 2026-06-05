@@ -5,3 +5,7 @@ __pycache__/
 db.sqlite3
 key/
 main.txt
+deploy.sh
+README.md
+pictures/
+deploy.sh

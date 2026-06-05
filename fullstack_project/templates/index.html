@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - TweetApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center" style="min-height: 80vh;">
+        <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+            <h1 class="display-4 fw-bold text-white mb-4">
+                <i class="bi bi-twitter"></i> Welcome to TweetApp
+            </h1>
+            <p class="lead text-white-50 mb-4">
+                Share your thoughts, connect with others, and stay updated with the latest tweets from around the world.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-start">
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4">
+                    <i class="bi bi-person-plus"></i> Get Started
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="text-center">
+                <i class="bi bi-chat-bubbles" style="font-size: 200px; color: rgba(255,255,255,0.1);"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mt-5 pt-5">
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-box">
+                <i class="bi bi-pencil-square" style="font-size: 48px; color: #667eea;"></i>
+                <h4 class="mt-3 text-white">Share Your Thoughts</h4>
+                <p class="text-white-50">Express yourself with up to 280 characters and share photos.</p>
+            </div>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-box">
+                <i class="bi bi-heart" style="font-size: 48px; color: #667eea;"></i>
+                <h4 class="mt-3 text-white">Like & Retweet</h4>
+                <p class="text-white-50">Engage with content by liking and retweeting posts you love.</p>
+            </div>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-box">
+                <i class="bi bi-people" style="font-size: 48px; color: #667eea;"></i>
+                <h4 class="mt-3 text-white">Follow Friends</h4>
+                <p class="text-white-50">Connect with users and follow their updates in real-time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

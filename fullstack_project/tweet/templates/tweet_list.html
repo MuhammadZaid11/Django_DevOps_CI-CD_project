@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Tweet App{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h1 class="text-center">Welcome to My App</h1>
+    </div>
+    <a class="btn btn-info mb-5" href="{% url 'tweet_create' %}" class="btn btn-primary mb-10">Create New Tweet</a>
+     
+    <div class="container row gap-3">
+        {% for tweet in tweets %}
+        <div class="card" style="width: 18rem;">
+        <img src="{{tweet.photo.url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+        <p class="card-text">{{tweet.text}}</p>
+        <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

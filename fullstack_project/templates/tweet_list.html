@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Tweet Feed - TweetApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Main Feed Column -->
+        <div class="col-lg-8 mx-auto">
+            <!-- Compose Tweet Section -->
+            {% if user.is_authenticated %}
+            <div class="card tweet-card mb-4">
+                <div class="card-body">
+                    <div class="d-flex gap-3">
+                        <div>
+                            {% if user.profile.profile_picture %}
+                                <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="rounded-circle" width="48" height="48">
+                            {% else %}
+                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="bi bi-person-fill text-white"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <a href="{% url 'tweet_create' %}" class="btn btn-light w-100 text-start">
+                                What's happening?!
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Tweets Feed -->
+            {% if tweets %}
+                {% for tweet in tweets %}
+                <div class="card tweet-card">
+                    <div class="card-body">
+                        <!-- Tweet Header -->
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="d-flex gap-3 flex-grow-1">
+                                <div>
+                                    {% if tweet.user.profile.profile_picture %}
+                                        <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}" class="rounded-circle" width="48" height="48">
+                                    {% else %}
+                                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                            <i class="bi bi-person-fill text-white"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <a href="{% url 'profile' tweet.user.username %}" class="text-decoration-none">
+                                            <strong class="text-dark">{{ tweet.user.get_full_name|default:tweet.user.username }}</strong>
+                                        </a>
+                                        <span class="text-muted">@{{ tweet.user.username }}</span>
+                                    </div>
+                                    <small class="text-muted">{{ tweet.created_at|date:"b d, Y H:i" }}</small>
+                                </div>
+                            </div>
+                            <!-- Edit/Delete Menu -->
+                            {% if user.is_authenticated and user == tweet.user %}
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'tweet_edit' tweet.id %}">Edit</a></li>
+                                    <li><a class="dropdown-item text-danger" href="{% url 'tweet_delete' tweet.id %}">Delete</a></li>
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Tweet Content -->
+                        <p class="text-dark mb-3">{{ tweet.text }}</p>
+
+                        <!-- Tweet Photo -->
+                        {% if tweet.photo %}
+                        <div class="mb-3">
+                            <img src="{{ tweet.photo.url }}" alt="Tweet photo" class="img-fluid rounded" style="max-height: 400px;">
+                        </div>
+                        {% endif %}
+
+                        <!-- Tweet Actions -->
+                        <div class="tweet-actions">
+                            <div class="tweet-action-btn" title="Like">
+                                <i class="bi bi-heart{% if user in tweet.likes.all %}-fill text-danger{% endif %}"></i>
+                                <span class="ms-2">{{ tweet.like_count }}</span>
+                            </div>
+                            <div class="tweet-action-btn" title="Retweet">
+                                <i class="bi bi-repeat{% if user in tweet.retweets.all %} text-success{% endif %}"></i>
+                                <span class="ms-2">{{ tweet.retweet_count }}</span>
+                            </div>
+                            <div class="tweet-action-btn" title="Reply">
+                                <i class="bi bi-chat"></i>
+                                <span class="ms-2">0</span>
+                            </div>
+                            <div class="tweet-action-btn" title="Share">
+                                <i class="bi bi-share"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No tweets yet. Be the first to tweet!
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar (Optional) -->
+        <div class="col-lg-4 d-none d-lg-block">
+            <div class="card sticky-top" style="top: 80px;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-fire"></i> Trending
+                    </h5>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <strong>#Django</strong>
+                            <br>
+                            <small class="text-muted">1,234 tweets</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <strong>#Python</strong>
+                            <br>
+                            <small class="text-muted">5,678 tweets</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <strong>#WebDevelopment</strong>
+                            <br>
+                            <small class="text-muted">2,345 tweets</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Like tweet functionality
+    document.querySelectorAll('.tweet-actions .tweet-action-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Add like/retweet functionality here
+            console.log('Action clicked');
+        });
+    });
+</script>
+{% endblock %}

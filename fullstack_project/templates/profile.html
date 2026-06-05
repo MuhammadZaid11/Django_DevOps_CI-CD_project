@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.username }} - TweetApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Profile Header -->
+            <div class="profile-header text-white">
+                <div class="row align-items-end">
+                    <div class="col-auto">
+                        {% if user_profile.profile_picture %}
+                            <img src="{{ user_profile.profile_picture.url }}" alt="{{ profile_user.username }}" class="profile-pic">
+                        {% else %}
+                            <div class="profile-pic rounded-circle bg-secondary d-flex align-items-center justify-content-center" style="font-size: 48px;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <h2 class="mb-0">{{ profile_user.get_full_name|default:profile_user.username }}</h2>
+                        <p class="text-white-50 mb-0">@{{ profile_user.username }}</p>
+                    </div>
+                    <div class="col-auto">
+                        {% if user.is_authenticated %}
+                            {% if user != profile_user %}
+                                <form action="{% url 'follow_user' profile_user.username %}" method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    {% if is_following %}
+                                        <button type="submit" class="btn btn-outline-light">
+                                            <i class="bi bi-person-check"></i> Following
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-light">
+                                            <i class="bi bi-person-plus"></i> Follow
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            {% else %}
+                                <a href="{% url 'edit_profile' %}" class="btn btn-light">
+                                    <i class="bi bi-pencil"></i> Edit Profile
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Bio and Stats -->
+                <div class="mt-3">
+                    {% if user_profile.bio %}
+                        <p class="mb-2">{{ user_profile.bio }}</p>
+                    {% endif %}
+                    <div class="d-flex gap-4">
+                        <div>
+                            <strong>{{ user_tweets.count }}</strong>
+                            <span class="text-white-50">Posts</span>
+                        </div>
+                        <div>
+                            <strong>{{ user_profile.followers.count }}</strong>
+                            <span class="text-white-50">Followers</span>
+                        </div>
+                        <div>
+                            <strong>{{ profile_user.following.count }}</strong>
+                            <span class="text-white-50">Following</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tweets Section -->
+            <div class="mt-4">
+                <h4 class="mb-3">
+                    <i class="bi bi-chat-square-text"></i> Tweets
+                </h4>
+
+                {% if user_tweets %}
+                    {% for tweet in user_tweets %}
+                    <div class="card tweet-card">
+                        <div class="card-body">
+                            <!-- Tweet Header -->
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="d-flex gap-3 flex-grow-1">
+                                    <div>
+                                        {% if tweet.user.profile.profile_picture %}
+                                            <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}" class="rounded-circle" width="48" height="48">
+                                        {% else %}
+                                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                                <i class="bi bi-person-fill text-white"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <strong class="text-dark">{{ tweet.user.get_full_name|default:tweet.user.username }}</strong>
+                                            <span class="text-muted">@{{ tweet.user.username }}</span>
+                                        </div>
+                                        <small class="text-muted">{{ tweet.created_at|date:"b d, Y H:i" }}</small>
+                                    </div>
+                                </div>
+                                <!-- Edit/Delete Menu -->
+                                {% if user.is_authenticated and user == tweet.user %}
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'tweet_edit' tweet.id %}">Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'tweet_delete' tweet.id %}">Delete</a></li>
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Tweet Content -->
+                            <p class="text-dark mb-3">{{ tweet.text }}</p>
+
+                            <!-- Tweet Photo -->
+                            {% if tweet.photo %}
+                            <div class="mb-3">
+                                <img src="{{ tweet.photo.url }}" alt="Tweet photo" class="img-fluid rounded" style="max-height: 400px;">
+                            </div>
+                            {% endif %}
+
+                            <!-- Tweet Actions -->
+                            <div class="tweet-actions">
+                                <div class="tweet-action-btn">
+                                    <i class="bi bi-heart{% if user in tweet.likes.all %}-fill text-danger{% endif %}"></i>
+                                    <span class="ms-2">{{ tweet.like_count }}</span>
+                                </div>
+                                <div class="tweet-action-btn">
+                                    <i class="bi bi-repeat{% if user in tweet.retweets.all %} text-success{% endif %}"></i>
+                                    <span class="ms-2">{{ tweet.retweet_count }}</span>
+                                </div>
+                                <div class="tweet-action-btn">
+                                    <i class="bi bi-chat"></i>
+                                    <span class="ms-2">0</span>
+                                </div>
+                                <div class="tweet-action-btn">
+                                    <i class="bi bi-share"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> No tweets yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -26,8 +26,19 @@ SECRET_KEY = 'django-insecure-yylo!j+tph+7c%7@8p-3rvi6br31q(ku1^5o%^m8&1!(fqqc^q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://zaid-devops.duckdns.org",
+]
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+ALLOWED_HOSTS = [
+    "98.95.158.120",
+    "zaid-devops.duckdns.org",
+    "localhost",
+    "127.0.0.1",
+]
 
 # Application definition
 

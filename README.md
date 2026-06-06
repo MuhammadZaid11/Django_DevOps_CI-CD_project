@@ -11,6 +11,13 @@ A full-featured Twitter/tweet clone built with **Django**, deployed on a live se
 🌐 **Live Demo:** [https://zaid-devops.duckdns.org](https://zaid-devops.duckdns.org)
 📦 **Repository:** [github.com/MuhammadZaid11/Django_DevOps_CI-CD_project](https://github.com/MuhammadZaid11/Django_DevOps_CI-CD_project)
 
+<img width="1363" height="732" alt="image" src="https://github.com/user-attachments/assets/eefeb9cd-b87e-4cf5-89f0-8081a2523a80" />
+<img width="1365" height="690" alt="image" src="https://github.com/user-attachments/assets/f3beab5c-0e45-4d67-9661-7dbb604567dc" />
+<img width="1366" height="690" alt="image" src="https://github.com/user-attachments/assets/09296aca-e6e8-4f59-b692-94afa81d9360" />
+<img width="934" height="469" alt="image" src="https://github.com/user-attachments/assets/641332ab-8cd9-4e4a-8feb-1ba3874c1adf" />
+
+
+
 ---
 
 ## 📋 Table of Contents
